@@ -14,57 +14,60 @@ Window {
     height: 650
 	maximumHeight : height
 	minimumHeight : height
-	title:"Arduino PyQt5 GUI"
+	title:"REFURBISH INVERTED PENDULUM"
 	color : "#000212"
     visible: true
     flags: Qt.Dialog
 	
-	Image{
-	x:-10
-	y:-50
-	width : 220
-	height : 220
-	source : "modbus.png"
-	
-	}
-	
-	Image{
-	x:850
-	y:10
-	width : 100
-	height : 100
-	source : "pyqt.png"
-	
-	}
-	
-	
-	
 	
 	Rectangle{
-	x: 200
-	y:0
-	width : 600
-	height : 130
-	color : "#122e55"
+	x : 700
+	width : 250
+	height : 110
+	color : "transparent"
+	border.color : "#df1c39"
+	border.width : 3
+	
+	ComboBox {
+		id : cb1
+		x : 10
+		y : 10
+
+	}
+	
+	Button {
+		id: connect
+		x :10
+		y :60
+		width : 140
+		text: connect.checked? "connect" : "disconnect"
+		font.pixelSize : 20
+		checkable : true
+		visible : true
+		
+		Rectangle{
+			width : parent.width
+			height: parent.height
+			color : connect.checked ? "#04f8fa" : "#df1c39"
+		}
+		
+		onClicked:{
+		backend.connection(connect.text, cb1.currentText)
+		
+		}
+		
+		}
+		
+	Image{
+	x : 160
+	anchors.verticalCenter: parent.verticalCenter
+	width : 75
+	height : 75
+	source : "electronics.png"
+	}
 	
 	}
 	
-	Text{
-	anchors.horizontalCenter: parent.horizontalCenter
-	y:0
-	text : "PyQt5 MODBUS RTU"
-	color : "white"
-	font.pixelSize : 50
-	}
-	
-	
-	Text{
-	anchors.horizontalCenter: parent.horizontalCenter
-	y:60
-	text : "written by : Muhammad Husni"
-	color : "white"//"#04f8fa"
-	font.pixelSize : 24
-	}
 	
 	
 	
@@ -422,6 +425,8 @@ Window {
 		sensor1_color.color = backend.get_input1_color()
 		sensor2_color.color = backend.get_input2_color()
 		holding_register.text = "Holding Register value : " + backend.get_holding_register()
+		
+		cb1.model = backend.port_val_read()
 		}
 	}
 	
